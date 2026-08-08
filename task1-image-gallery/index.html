@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery</title>
+    <link rel="icon"
+        href="https://play-lh.googleusercontent.com/GksiQNWfBFyJJ1cqyH_760H1kbFbdrkCtPwa_rnNJzqdRh8eJ8W-6pB1hv6Lb_M0YFiF0yfHNLyKbjnWW-m6qA">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div id="lightbox" class="lightbox">
+        <span class="lightbox-close">&times;</span>
+        <button class="nav-btn prev">&#10094;</button>
+        <img class="lightbox-img" src="" alt="Expanded Image">
+        <button class="nav-btn next">&#10095;</button>
+    </div>
+    <main class="main-container">
+        <div class="filter-buttons">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="cats">Cats</button>
+            <button class="filter-btn" data-filter="dogs">Dogs</button>
+            <button class="filter-btn" data-filter="lions">Lions</button>
+            <button class="filter-btn" data-filter="pandas">Pandas</button>
+            <button class="filter-btn" data-filter="butterflies">Butterflies</button>
+        </div>
+        <div class="gallery-container">
+            <div class="gallery-item" data-category="pandas">
+                <img src="images/pandas/panda1.jpg" alt="panda">
+            </div>
+            <div class="gallery-item" data-category="pandas">
+                <img src="images/pandas/panda2.jpg" alt="panda">
+            </div>
+            <div class="gallery-item" data-category="pandas">
+                <img src="images/pandas/panda3.jpg" alt="panda">
+            </div>
+            <div class="gallery-item" data-category="pandas">
+                <img src="images/pandas/panda4.jpg" alt="panda">
+            </div>
+            <div class="gallery-item" data-category="lions">
+                <img src="images/lions/lion1.jpg" alt="lion">
+            </div>
+            <div class="gallery-item" data-category="lions">
+                <img src="images/lions/lion2.jpg" alt="lion">
+            </div>
+            <div class="gallery-item" data-category="lions">
+                <img src="images/lions/lion3.jpg" alt="lion">
+            </div>
+            <div class="gallery-item" data-category="lions">
+                <img src="images/lions/lion4.jpg" alt="lion">
+            </div>
+            <div class="gallery-item" data-category="butterflies">
+                <img src="images/butterflies/butterfly1.jpg" alt="butterfly">
+            </div>
+            <div class="gallery-item" data-category="butterflies">
+                <img src="images/butterflies/butterfly2.jpg" alt="butterfly">
+            </div>
+            <div class="gallery-item" data-category="butterflies">
+                <img src="images/butterflies/butterfly3.jpg" alt="butterfly">
+            </div>
+            <div class="gallery-item" data-category="butterflies">
+                <img src="images/butterflies/butterfly4.jpg" alt="butterfly">
+            </div>
+            <div class="gallery-item" data-category="cats">
+                <img src="images/cats/cat1.jpg" alt="cat">
+            </div>
+            <div class="gallery-item" data-category="cats">
+                <img src="images/cats/cat2.jpg" alt="cat">
+            </div>
+            <div class="gallery-item" data-category="cats">
+                <img src="images/cats/cat3.jpg" alt="cat">
+            </div>
+            <div class="gallery-item" data-category="cats">
+                <img src="images/cats/cat4.jpg" alt="cat">
+            </div>
+            <div class="gallery-item" data-category="dogs">
+                <img src="images/dogs/dog1.jpg" alt="dog">
+            </div>
+            <div class="gallery-item" data-category="dogs">
+                <img src="images/dogs/dog2.jpg" alt="dog">
+            </div>
+            <div class="gallery-item" data-category="dogs">
+                <img src="images/dogs/dog3.jpg" alt="dog">
+            </div>
+            <div class="gallery-item" data-category="dogs">
+                <img src="images/dogs/dog4.jpg" alt="dog">
+            </div>
+        </div>
+    </main>
+    <script src="script.js"></script>
+</body>
+
+</html>
