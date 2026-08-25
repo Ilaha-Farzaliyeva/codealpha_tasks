@@ -5,44 +5,60 @@ let currentInput = '0';
 let firstOperand = null;
 let operator = null;
 let waitingForSecondOperand = false;
+let isPercentage = false;
 
 function updateDisplay() {
-    display.textContent = currentInput;
+    if (operator && firstOperand !== null) {
+        const expression = `${firstOperand} ${operator}`;
+        display.textContent = waitingForSecondOperand
+            ? expression
+            : `${expression} ${currentInput}${isPercentage ? '%' : ''}`;
+        return;
+    }
+
+    display.textContent = `${currentInput}${isPercentage ? '%' : ''}`;
 }
 
 function inputNumber(num) {
-    if (currentInput === '0') {
+    if (waitingForSecondOperand || isPercentage || currentInput === '0') {
         currentInput = num;
+        waitingForSecondOperand = false;
+        isPercentage = false;
     } else {
         currentInput += num;
     }
 }
 
 function inputDecimal(dot) {
-    if (waitingForSecondOperand) return;
-    
+    if (waitingForSecondOperand || isPercentage) {
+        currentInput = '0.';
+        waitingForSecondOperand = false;
+        isPercentage = false;
+        return;
+    }
+
     if (!currentInput.includes(dot)) {
         currentInput += dot;
     }
 }
 
 function handleOperator(nextOperator) {
-    
+
     if (operator && waitingForSecondOperand) {
         operator = nextOperator;
-        currentInput = currentInput.trim().slice(0, -1) + ` ${nextOperator} `;
         return;
     }
-    const inputValue = parseFloat(currentInput);    
+    const inputValue = getCurrentValue();
 
     if (operator && firstOperand !== null) {
         const result = calculate(firstOperand, inputValue, operator);
         const formattedResult = parseFloat(result.toFixed(7));
-        
+
         firstOperand = formattedResult;
         operator = nextOperator;
-        currentInput = `${formattedResult} ${nextOperator} `;
+        currentInput = `${formattedResult}`;
         waitingForSecondOperand = true;
+        isPercentage = false;
         return;
     }
 
@@ -52,7 +68,17 @@ function handleOperator(nextOperator) {
 
     waitingForSecondOperand = true;
     operator = nextOperator;
-    currentInput += ` ${nextOperator} `;
+}
+
+function getCurrentValue() {
+    const value = parseFloat(currentInput);
+    return isPercentage ? value / 100 : value;
+}
+
+function inputPercentage() {
+    if (!waitingForSecondOperand) {
+        isPercentage = true;
+    }
 }
 
 function calculate(first, second, op) {
@@ -60,7 +86,6 @@ function calculate(first, second, op) {
     if (op === '-') return first - second;
     if (op === '*') return first * second;
     if (op === '/') return second !== 0 ? first / second : 'Xəta';
-    if (op === '%') return (first * second) / 100;
     return second;
 }
 
@@ -69,6 +94,23 @@ function resetCalculator() {
     firstOperand = null;
     operator = null;
     waitingForSecondOperand = false;
+    isPercentage = false;
+}
+
+function handleCalculation() {
+    if (operator && firstOperand !== null) {
+        const result = calculate(firstOperand, getCurrentValue(), operator);
+        currentInput = `${parseFloat(result.toFixed(7))}`;
+        firstOperand = null;
+        operator = null;
+        waitingForSecondOperand = false;
+        isPercentage = false;
+    } else if (isPercentage) {
+        currentInput = `${getCurrentValue()}`;
+        isPercentage = false;
+    }
+
+    updateDisplay();
 }
 
 function deleteLastDigit() {
@@ -101,16 +143,14 @@ keys.addEventListener('click', (event) => {
         return;
     }
 
+    if (target.dataset.action === 'percent') {
+        inputPercentage();
+        updateDisplay();
+        return;
+    }
+
     if (target.dataset.action === 'calculate') {
-        if (operator && firstOperand !== null) {
-            const inputValue = parseFloat(currentInput);
-            const result = calculate(firstOperand, inputValue, operator);
-            currentInput = `${parseFloat(result.toFixed(7))}`;
-            firstOperand = null;
-            operator = null;
-            waitingForSecondOperand = false;
-            updateDisplay();
-        }
+        handleCalculation();
         return;
     }
 
@@ -134,19 +174,14 @@ window.addEventListener('keydown', (e) => {
     } else if (e.key === '.') {
         inputDecimal('.');
         updateDisplay();
-    } else if (e.key === '+' || e.key === '-' || e.key === '*' || e.key === '/' || e.key === '%') {
+    } else if (e.key === '+' || e.key === '-' || e.key === '*' || e.key === '/') {
         handleOperator(e.key);
         updateDisplay();
+    } else if (e.key === '%') {
+        inputPercentage();
+        updateDisplay();
     } else if (e.key === 'Enter' || e.key === '=') {
-        if (operator && firstOperand !== null) {
-            const inputValue = parseFloat(currentInput);
-            const result = calculate(firstOperand, inputValue, operator);
-            currentInput = `${parseFloat(result.toFixed(7))}`;
-            firstOperand = null;
-            operator = null;
-            waitingForSecondOperand = false;
-            updateDisplay();
-        }
+        handleCalculation();
     } else if (e.key === 'Backspace') {
         deleteLastDigit();
         updateDisplay();
